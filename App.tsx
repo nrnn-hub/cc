@@ -1,0 +1,153 @@
+
+import React, { useState, useEffect } from 'react';
+import { Navbar } from './components/Navbar';
+import { ProductCard } from './components/ProductCard';
+import { CheckoutPage } from './components/CheckoutPage';
+import { RevealPage } from './components/RevealPage';
+import { PRODUCTS } from './constants';
+import { Product, CartItem, AppView } from './types';
+import { ShieldAlert, Github, Info } from 'lucide-react';
+
+export default function App() {
+  const [view, setView] = useState<AppView>('grid');
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  // Scroll to top on view change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [view]);
+
+  const handleAddToCart = (product: Product) => {
+    setCart((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prev, { ...product, quantity: 1 }];
+    });
+  };
+
+  const handleRemoveFromCart = (id: string) => {
+    setCart((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleBuyNow = (product: Product) => {
+    // Clear cart and add only this item, or just add it and go to checkout
+    setCart([{ ...product, quantity: 1 }]);
+    setView('checkout');
+  };
+
+  const resetSim = () => {
+    setCart([]);
+    setView('grid');
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col selection:bg-[#39FF14] selection:text-black">
+      <Navbar 
+        cart={cart} 
+        onRemove={handleRemoveFromCart} 
+        onViewChange={setView}
+        currentView={view}
+      />
+
+      <main className="flex-1">
+        {view === 'grid' && (
+          <div className="max-w-7xl mx-auto px-6 py-12 space-y-12 animate-in fade-in duration-700">
+            {/* Hero Section */}
+            <div className="text-center space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#39FF14]/10 border border-[#39FF14]/20 text-[#39FF14] text-xs font-bold uppercase tracking-widest mb-4">
+                <ShieldAlert size={14} /> Encrypted Connection Established
+              </div>
+              <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white">
+                ELITE <span className="text-[#39FF14] neon-glow">DEALS</span> ONLY.
+              </h1>
+              <p className="text-slate-500 max-w-2xl mx-auto text-lg">
+                Exclusive inventory from verified shadow channels. Unbeatable prices. 
+                <span className="text-white"> Limited time availability.</span>
+              </p>
+            </div>
+
+            {/* Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {PRODUCTS.map((product) => (
+                <ProductCard 
+                  key={product.id} 
+                  product={product} 
+                  onAddToCart={handleAddToCart}
+                  onBuyNow={handleBuyNow}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {view === 'checkout' && (
+          <CheckoutPage 
+            cart={cart} 
+            onBack={() => setView('grid')} 
+            onConfirm={() => setView('reveal')}
+          />
+        )}
+
+        {view === 'reveal' && (
+          <RevealPage onRestart={resetSim} />
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-white/5 bg-[#0D0D15] py-12 px-6">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <ShieldAlert className="text-[#39FF14]" size={20} />
+              <span className="text-lg font-bold font-mono">SHADOWMARKET</span>
+            </div>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Leading the decentralized commerce revolution since 2024. Privacy is our priority.
+            </p>
+          </div>
+          
+          <div>
+            <h4 className="text-xs font-black text-white uppercase tracking-widest mb-4">Navigation</h4>
+            <ul className="space-y-2 text-xs text-slate-400">
+              <li className="hover:text-[#39FF14] cursor-pointer">Marketplace</li>
+              <li className="hover:text-[#39FF14] cursor-pointer">Seller Portal</li>
+              <li className="hover:text-[#39FF14] cursor-pointer">Verification Protocol</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-black text-white uppercase tracking-widest mb-4">Support</h4>
+            <ul className="space-y-2 text-xs text-slate-400">
+              <li className="hover:text-[#39FF14] cursor-pointer">Anonymous Chat</li>
+              <li className="hover:text-[#39FF14] cursor-pointer">Dispute Node</li>
+              <li className="hover:text-[#39FF14] cursor-pointer">FAQ</li>
+            </ul>
+          </div>
+
+          <div className="p-4 rounded-xl bg-white/5 border border-white/5 space-y-3">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#39FF14]">
+              <Info size={14} /> EDUCATIONAL SIMULATION
+            </div>
+            <p className="text-[10px] text-slate-500 leading-tight">
+              ShadowMarket is a fictional simulator created for cybersecurity awareness. 
+              No real payments are processed. Always buy from reputable, legal vendors.
+            </p>
+          </div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-slate-600 uppercase tracking-widest">
+          <p>© 2024 ShadowMarket Awareness Initiative</p>
+          <div className="flex items-center gap-6">
+            <span className="flex items-center gap-1"><Github size={12} /> Source Code</span>
+            <span>Terms of Illusion</span>
+            <span>Privacy Phantom</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
