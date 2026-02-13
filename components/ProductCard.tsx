@@ -28,27 +28,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
   const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
 
   return (
-    <div className="group relative bg-[#12121A] border border-white/5 rounded-xl overflow-hidden hover:border-[#39FF14]/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(57,255,20,0.1)]">
+    <div className="group relative bg-[#12121A] border border-white/5 rounded-xl overflow-hidden hover:border-[#39FF14]/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(57,255,20,0.15)]">
       {/* Discount Badge */}
-      <div className="absolute top-3 left-3 z-10 bg-[#39FF14] text-black text-[10px] font-black px-2 py-1 rounded-sm uppercase tracking-tighter animate-bounce">
+      <div className="absolute top-3 left-3 z-20 bg-[#39FF14] text-black text-[10px] font-black px-2 py-1 rounded-sm uppercase tracking-tighter animate-bounce shadow-lg">
         {discount}% OFF
       </div>
 
       {/* Verified Badge */}
-      <div className="absolute top-3 right-3 z-10 bg-blue-500/20 backdrop-blur-md border border-blue-500/30 text-blue-400 text-[10px] font-bold px-2 py-1 rounded flex items-center gap-1">
+      <div className="absolute top-3 right-3 z-20 bg-blue-500/20 backdrop-blur-md border border-blue-500/30 text-blue-400 text-[10px] font-bold px-2 py-1 rounded flex items-center gap-1">
         <Zap size={10} fill="currentColor" /> VERIFIED SELLER
       </div>
 
-      <div className="aspect-square overflow-hidden relative">
+      <div className="aspect-square overflow-hidden relative cursor-zoom-in">
         <img 
           src={product.image} 
           alt={product.title} 
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-125 group-hover:brightness-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#12121A] to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#12121A] via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-500" />
         
         {/* Countdown Overlay */}
-        <div className="absolute bottom-2 left-2 right-2 bg-red-500/20 backdrop-blur-md border border-red-500/30 p-1.5 rounded flex items-center justify-between">
+        <div className="absolute bottom-2 left-2 right-2 bg-red-500/20 backdrop-blur-md border border-red-500/30 p-1.5 rounded flex items-center justify-between z-10">
           <div className="flex items-center gap-1.5 text-red-400">
             <Clock size={12} className="animate-spin-slow" />
             <span className="text-[10px] font-bold uppercase tracking-widest">Ending Soon</span>
@@ -57,7 +57,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
         </div>
       </div>
 
-      <div className="p-4 space-y-3">
+      <div className="p-4 space-y-3 relative z-10 bg-[#12121A]">
         <h3 className="font-bold text-white line-clamp-2 leading-tight h-10 group-hover:text-[#39FF14] transition-colors">
           {product.title}
         </h3>
@@ -89,7 +89,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
           </button>
           <button 
             onClick={() => onBuyNow(product)}
-            className="flex items-center justify-center bg-[#39FF14] hover:bg-[#32E611] text-black text-xs font-black py-2.5 rounded-lg transition-colors uppercase tracking-widest shadow-[0_4px_10px_rgba(57,255,20,0.3)]"
+            className="flex items-center justify-center bg-[#39FF14] hover:bg-[#32E611] text-black text-xs font-black py-2.5 rounded-lg transition-colors uppercase tracking-widest shadow-[0_4px_10px_rgba(57,255,20,0.3)] active:scale-95"
           >
             BUY NOW
           </button>
