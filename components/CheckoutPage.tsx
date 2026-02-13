@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { CreditCard, Wallet, Bitcoin, ChevronLeft, ShieldCheck, Lock } from 'lucide-react';
-import { CartItem } from '../types';
+import { CartItem } from '../types.ts';
 
 interface CheckoutPageProps {
   cart: CartItem[];

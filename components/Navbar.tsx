@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { ShoppingCart, ShieldAlert, X, Trash2, ChevronRight } from 'lucide-react';
-import { CartItem, AppView } from '../types';
-import { COLORS } from '../constants';
+import { CartItem, AppView } from '../types.ts';
+import { COLORS } from '../constants.tsx';
 
 interface NavbarProps {
   cart: CartItem[];

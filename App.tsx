@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { Navbar } from './components/Navbar';
-import { ProductCard } from './components/ProductCard';
-import { CheckoutPage } from './components/CheckoutPage';
-import { RevealPage } from './components/RevealPage';
-import { PRODUCTS } from './constants';
-import { Product, CartItem, AppView } from './types';
+import { Navbar } from './components/Navbar.tsx';
+import { ProductCard } from './components/ProductCard.tsx';
+import { CheckoutPage } from './components/CheckoutPage.tsx';
+import { RevealPage } from './components/RevealPage.tsx';
+import { PRODUCTS } from './constants.tsx';
+import { Product, CartItem, AppView } from './types.ts';
 import { ShieldAlert, Github, Info } from 'lucide-react';
 
 export default function App() {

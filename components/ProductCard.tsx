@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Star, Zap, Clock } from 'lucide-react';
-import { Product } from '../types';
+import { Product } from '../types.ts';
 
 interface ProductCardProps {
   product: Product;
