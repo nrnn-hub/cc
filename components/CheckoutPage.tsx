@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { CreditCard, Wallet, Bitcoin, ChevronLeft, ShieldCheck, Lock } from 'lucide-react';
+import { CreditCard, Wallet, Bitcoin, ChevronLeft, ShieldCheck, Lock, CreditCard as CardIcon } from 'lucide-react';
 import { CartItem } from '../types.ts';
 
 interface CheckoutPageProps {
@@ -15,6 +15,8 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ cart, onBack, onConf
     email: '',
     address: ''
   });
+
+  const [paymentMethod, setPaymentMethod] = useState<'crypto' | 'card'>('crypto');
 
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
@@ -70,7 +72,11 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ cart, onBack, onConf
             </div>
             
             <div className="space-y-4">
-              <div className="flex items-center gap-3 p-4 bg-black/50 border border-[#39FF14] rounded-xl cursor-not-allowed opacity-100">
+              {/* Crypto Option (The "Scam" Preferred Way) */}
+              <div 
+                onClick={() => setPaymentMethod('crypto')}
+                className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all ${paymentMethod === 'crypto' ? 'bg-[#39FF14]/5 border-[#39FF14]' : 'bg-black/50 border-white/10 hover:border-white/20'}`}
+              >
                 <div className="w-10 h-10 rounded bg-[#39FF14]/10 flex items-center justify-center">
                   <Bitcoin className="text-[#39FF14]" size={20} />
                 </div>
@@ -78,20 +84,39 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ cart, onBack, onConf
                   <p className="font-bold text-sm">Cryptocurrency (BTC / ETH / SOL)</p>
                   <p className="text-xs text-[#39FF14]">Instant processing + 5% discount applied</p>
                 </div>
-                <div className="w-5 h-5 rounded-full border-2 border-[#39FF14] flex items-center justify-center">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#39FF14]" />
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'crypto' ? 'border-[#39FF14]' : 'border-slate-600'}`}>
+                  {paymentMethod === 'crypto' && <div className="w-2.5 h-2.5 rounded-full bg-[#39FF14]" />}
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-4 bg-white/5 border border-white/5 rounded-xl opacity-40 cursor-not-allowed group">
-                <div className="w-10 h-10 rounded bg-slate-500/10 flex items-center justify-center">
-                  <CreditCard className="text-slate-500" size={20} />
+              {/* Credit Card Options (Usually fake or disabled on real scams) */}
+              <div 
+                className={`flex flex-col gap-4 p-4 border rounded-xl transition-all opacity-60 cursor-not-allowed bg-white/5 border-white/5`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded bg-slate-500/10 flex items-center justify-center">
+                    <CardIcon className="text-slate-500" size={20} />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-bold text-sm">Credit / Debit Card</p>
+                    <div className="flex gap-2 mt-1">
+                      <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded border border-white/10 text-slate-300">VISA</span>
+                      <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded border border-white/10 text-slate-300">MASTERCARD</span>
+                      <span className="text-[10px] bg-white/10 px-1.5 py-0.5 rounded border border-white/10 text-slate-300">AMEX</span>
+                    </div>
+                  </div>
+                  <Lock size={16} className="text-slate-500" />
                 </div>
-                <div className="flex-1">
-                  <p className="font-bold text-sm">Credit Card</p>
-                  <p className="text-xs text-red-500">Service currently unavailable due to maintenance</p>
-                </div>
-                <Lock size={16} className="text-slate-500" />
+                <p className="text-[10px] text-red-500 font-bold uppercase tracking-tight">
+                  Processor Offline: Please use Crypto for 100% success rate
+                </p>
+              </div>
+
+              {/* Individual Card Logos for visual trust-building (fake) */}
+              <div className="grid grid-cols-3 gap-2 opacity-30 grayscale pt-2">
+                <div className="flex items-center justify-center p-2 border border-white/10 rounded-lg text-[10px] font-black italic tracking-widest bg-white/5">VISA</div>
+                <div className="flex items-center justify-center p-2 border border-white/10 rounded-lg text-[10px] font-black italic tracking-widest bg-white/5">MASTERCARD</div>
+                <div className="flex items-center justify-center p-2 border border-white/10 rounded-lg text-[10px] font-black italic tracking-widest bg-white/5">AMEX</div>
               </div>
             </div>
           </section>
@@ -133,6 +158,12 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ cart, onBack, onConf
             >
               <ShieldCheck size={20} /> Confirm Secure Order
             </button>
+            
+            <div className="flex justify-center gap-4 mt-6 opacity-40 grayscale scale-75">
+              <span className="text-[10px] font-bold border border-white/20 px-2 py-1 rounded">VERIFIED BY VISA</span>
+              <span className="text-[10px] font-bold border border-white/20 px-2 py-1 rounded">MASTERCARD SECURECODE</span>
+            </div>
+
             <p className="text-[10px] text-center text-slate-500 mt-4 uppercase tracking-tighter">
               By confirming, you agree to the anonymous commerce protocol.
             </p>
