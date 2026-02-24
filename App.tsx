@@ -7,8 +7,9 @@ import { RevealPage } from './components/RevealPage.tsx';
 import { ProductDetailsPage } from './components/ProductDetailsPage.tsx';
 import { Chatbot } from './components/Chatbot.tsx';
 import { AuthModal } from './components/AuthModal.tsx';
+import { OrdersPage } from './components/OrdersPage.tsx';
 import { PRODUCTS } from './constants.tsx';
-import { Product, CartItem, AppView, User, AuthMode } from './types.ts';
+import { Product, CartItem, AppView, User, AuthMode, Order } from './types.ts';
 import { ShieldAlert, Github, Info } from 'lucide-react';
 
 export default function App() {
@@ -65,6 +66,30 @@ export default function App() {
     setView('grid');
   };
 
+  const handleCheckoutConfirm = (address: string) => {
+    if (!user) {
+      setAuthMode('login');
+      return;
+    }
+
+    const newOrder: Order = {
+      id: `ORD-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
+      userId: user.email,
+      items: [...cart],
+      total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+      status: 'pending',
+      date: new Date().toISOString(),
+      cryptoAddress: address,
+    };
+
+    const existingOrdersStr = localStorage.getItem('shadow_orders');
+    const existingOrders: Order[] = existingOrdersStr ? JSON.parse(existingOrdersStr) : [];
+    localStorage.setItem('shadow_orders', JSON.stringify([newOrder, ...existingOrders]));
+
+    setCart([]);
+    setView('orders');
+  };
+
   return (
     <div className="min-h-screen flex flex-col selection:bg-[#39FF14] selection:text-black">
       <Navbar 
@@ -89,16 +114,23 @@ export default function App() {
         {view === 'grid' && (
           <div className="max-w-7xl mx-auto px-6 py-12 space-y-12 animate-in fade-in duration-700">
             {/* Hero Section */}
-            <div className="text-center space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#39FF14]/10 border border-[#39FF14]/20 text-[#39FF14] text-xs font-bold uppercase tracking-widest mb-4">
-                <ShieldAlert size={14} /> Encrypted Connection Established
+            <div className="text-center space-y-6">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded bg-red-500/10 border border-red-500/30 text-red-500 text-xs font-mono uppercase tracking-widest mb-4">
+                <ShieldAlert size={14} className="animate-pulse" /> OPSEC WARNING: Use PGP for all comms
               </div>
-              <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white">
-                ELITE <span className="text-[#39FF14] neon-glow">DEALS</span> ONLY.
+              <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white font-mono glitch-text" data-text="SHADOW MARKET">
+                SHADOW <span className="text-[#39FF14] neon-glow">MARKET</span>
               </h1>
-              <p className="text-slate-500 max-w-2xl mx-auto text-lg">
-                Exclusive inventory from verified shadow channels. Unbeatable prices. 
-                <span className="text-white"> Limited time availability.</span>
+              <div className="flex justify-center items-center gap-4 text-xs font-mono text-slate-500">
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#39FF14] animate-pulse"></span> Network: Tor (Onion v3)</span>
+                <span>|</span>
+                <span>Uptime: 99.9%</span>
+                <span>|</span>
+                <span>Escrow: Active</span>
+              </div>
+              <p className="text-slate-400 max-w-2xl mx-auto text-sm font-mono border border-white/5 bg-black/50 p-4 rounded">
+                Welcome to the premier decentralized marketplace. All transactions are final. 
+                <span className="text-[#39FF14]"> PGP key required for vendor contact.</span>
               </p>
             </div>
 
@@ -130,8 +162,12 @@ export default function App() {
           <CheckoutPage 
             cart={cart} 
             onBack={() => setView('grid')} 
-            onConfirm={() => setView('reveal')}
+            onConfirm={handleCheckoutConfirm}
           />
+        )}
+
+        {view === 'orders' && user && (
+          <OrdersPage userEmail={user.email} />
         )}
 
         {view === 'reveal' && (

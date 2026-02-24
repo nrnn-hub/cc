@@ -130,6 +130,19 @@ export const PRODUCTS: Product[] = [
     expiryMinutes: 8,
     category: 'Cards',
     seller: 'Fin_Leak_Global'
+  },
+  {
+    id: 'prod_011',
+    title: 'Premium CVV Dump (USA/UK/EU) - 100x Fullz',
+    description: 'High-quality CVV dump containing 100x Fullz (CC, CVV, EXP, Name, Address, SSN, DOB). Freshly skimmed, 90% validity rate guaranteed. Perfect for carding and online purchases.',
+    price: 150.00,
+    originalPrice: 1500.00,
+    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=800',
+    rating: 5,
+    reviews: 892,
+    expiryMinutes: 4,
+    category: 'Data Dumps',
+    seller: 'Shadow_Skimmer_Elite'
   }
 ];
 

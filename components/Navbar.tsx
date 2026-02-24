@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ShoppingCart, ShieldAlert, X, Trash2, ChevronRight, User, LogOut, LogIn } from 'lucide-react';
+import { ShoppingCart, ShieldAlert, X, Trash2, ChevronRight, User, LogOut, LogIn, Package } from 'lucide-react';
 import { CartItem, AppView, User as UserType, AuthMode } from '../types.ts';
 import { COLORS } from '../constants.tsx';
 
@@ -37,14 +37,25 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="w-10 h-10 bg-[#39FF14]/10 rounded flex items-center justify-center border border-[#39FF14]/30 group-hover:border-[#39FF14] transition-all">
             <ShieldAlert className="text-[#39FF14]" size={24} />
           </div>
-          <span className="text-2xl font-bold tracking-tighter text-white font-mono hidden sm:block">
-            SHADOW<span className="text-[#39FF14] neon-glow">MARKET</span>
-          </span>
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold tracking-tighter text-white font-mono hidden sm:block glitch-text" data-text="SHADOWMARKET">
+              SHADOW<span className="text-[#39FF14] neon-glow">MARKET</span>
+            </span>
+            <span className="text-[8px] text-slate-500 font-mono hidden sm:block tracking-widest">
+              v3.onion.link
+            </span>
+          </div>
         </div>
 
         <div className="flex items-center gap-4 sm:gap-6">
           {user ? (
             <div className="flex items-center gap-4">
+              <button 
+                onClick={() => onViewChange('orders')}
+                className="text-slate-400 hover:text-[#39FF14] transition-colors text-xs font-bold uppercase tracking-wider flex items-center gap-1"
+              >
+                <Package size={16} /> <span className="hidden sm:inline">Orders</span>
+              </button>
               <div className="hidden md:flex items-center gap-2 text-xs font-mono text-[#39FF14] bg-[#39FF14]/10 px-3 py-1.5 rounded border border-[#39FF14]/20">
                 <User size={14} />
                 <span className="truncate max-w-[100px]">{user.name || user.email}</span>

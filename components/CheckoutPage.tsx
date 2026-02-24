@@ -6,10 +6,10 @@ import { CartItem } from '../types.ts';
 interface CheckoutPageProps {
   cart: CartItem[];
   onBack: () => void;
-  onConfirm: () => void;
+  onConfirm: (address: string) => void;
 }
 
-type CheckoutStep = 'details' | 'payment-pending';
+type CheckoutStep = 'details' | 'payment-pending' | 'success';
 
 export const CheckoutPage: React.FC<CheckoutPageProps> = ({ cart, onBack, onConfirm }) => {
   const [step, setStep] = useState<CheckoutStep>('details');
@@ -40,7 +40,11 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ cart, onBack, onConf
     setIsVerifying(true);
     // Simulate a fake "blockchain verification" delay
     setTimeout(() => {
-      onConfirm();
+      setIsVerifying(false);
+      setStep('success');
+      setTimeout(() => {
+        onConfirm(btcAddress);
+      }, 2000);
     }, 2500);
   };
 
@@ -49,6 +53,19 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ cart, onBack, onConf
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  if (step === 'success') {
+    return (
+      <div className="max-w-2xl mx-auto px-6 py-12 animate-in fade-in duration-500 flex flex-col items-center justify-center min-h-[50vh]">
+        <div className="w-24 h-24 rounded-full bg-[#39FF14]/20 flex items-center justify-center text-[#39FF14] border border-[#39FF14]/50 mb-6">
+          <Check size={48} />
+        </div>
+        <h2 className="text-3xl font-black text-white uppercase tracking-tight font-mono mb-2">TRANSACTION COMPLETE</h2>
+        <p className="text-[#39FF14] font-mono text-sm mb-8">Escrow secured. Awaiting admin confirmation.</p>
+        <Loader2 className="animate-spin text-slate-500" size={24} />
+      </div>
+    );
+  }
 
   if (step === 'payment-pending') {
     return (

@@ -34,10 +34,10 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
   const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12 animate-in fade-in duration-500">
+    <div className="max-w-6xl mx-auto px-6 py-12 animate-in fade-in duration-500 font-mono">
       <button 
         onClick={onBack}
-        className="flex items-center gap-2 text-slate-400 hover:text-[#39FF14] transition-colors mb-8 font-mono text-sm uppercase tracking-widest"
+        className="flex items-center gap-2 text-slate-400 hover:text-[#39FF14] transition-colors mb-8 text-sm uppercase tracking-widest"
       >
         <ArrowLeft size={16} /> Return to Marketplace
       </button>
@@ -45,33 +45,38 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
       <div className="grid md:grid-cols-2 gap-12">
         {/* Left Column - Image */}
         <div className="space-y-4">
-          <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 bg-[#12121A] group">
+          <div className="relative aspect-square border border-[#39FF14]/30 bg-[#0A0A0F] group p-2">
+            {/* Scanline effect */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden z-30">
+              <div className="w-full h-1 bg-[#39FF14]/20 absolute top-0 animate-[scan_3s_linear_infinite]"></div>
+            </div>
+
             {/* Discount Badge */}
-            <div className="absolute top-4 left-4 z-20 bg-[#39FF14] text-black text-xs font-black px-3 py-1.5 rounded-sm uppercase tracking-tighter shadow-lg">
-              {discount}% OFF
+            <div className="absolute top-4 left-4 z-20 bg-red-500/20 border border-red-500/50 text-red-500 text-xs font-black px-3 py-1.5 uppercase tracking-widest shadow-lg">
+              [{discount}% OFF]
             </div>
 
             <img 
               src={product.image} 
               alt={product.title} 
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0"
             />
             
             {/* Countdown Overlay */}
-            <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md border border-red-500/30 p-3 rounded-lg flex items-center justify-between z-10">
-              <div className="flex items-center gap-2 text-red-400">
-                <Clock size={16} className="animate-spin-slow" />
-                <span className="text-xs font-bold uppercase tracking-widest">Offer Expires In</span>
+            <div className="absolute bottom-4 left-4 right-4 bg-black/80 border border-red-500/50 p-3 flex items-center justify-between z-10">
+              <div className="flex items-center gap-2 text-red-500">
+                <Clock size={16} className="animate-pulse" />
+                <span className="text-xs font-bold uppercase tracking-widest">Listing Expires</span>
               </div>
-              <span className="text-red-400 text-lg font-mono font-bold">{formatTime(timeLeft)}</span>
+              <span className="text-red-500 text-lg font-bold">{formatTime(timeLeft)}</span>
             </div>
           </div>
           
-          <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4 flex items-start gap-3">
-            <AlertTriangle className="text-yellow-500 shrink-0 mt-0.5" size={18} />
-            <p className="text-xs text-yellow-500/80 leading-relaxed font-mono">
+          <div className="bg-red-500/10 border border-red-500/30 p-4 flex items-start gap-3">
+            <AlertTriangle className="text-red-500 shrink-0 mt-0.5 animate-pulse" size={18} />
+            <p className="text-xs text-red-500/80 leading-relaxed">
               WARNING: High demand detected. 47 users are currently viewing this item. 
-              Stock is not guaranteed until checkout is complete.
+              Stock is not guaranteed until checkout is complete. Use PGP for comms.
             </p>
           </div>
         </div>
@@ -80,38 +85,39 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
         <div className="space-y-8">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-xs font-mono text-slate-400 uppercase tracking-wider">
-                {product.category}
+              <span className="px-2.5 py-1 bg-transparent border border-[#39FF14]/30 text-xs text-[#39FF14] uppercase tracking-wider">
+                [{product.category}]
               </span>
-              <div className="flex items-center gap-1.5 text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2.5 py-1 rounded text-xs font-bold uppercase tracking-wider">
-                <Zap size={12} fill="currentColor" /> Verified Seller
+              <div className="flex items-center gap-1.5 text-[#39FF14] bg-black/80 border border-[#39FF14]/30 px-2.5 py-1 text-xs font-bold uppercase tracking-wider">
+                <Zap size={12} fill="currentColor" /> PGP Verified
               </div>
             </div>
 
-            <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight">
-              {product.title}
+            <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight glitch-text" data-text={product.title}>
+              {'>'} {product.title}
             </h1>
 
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1">
-                <div className="flex text-yellow-400">
+                <div className="flex text-[#39FF14]">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} size={16} fill="currentColor" />
                   ))}
                 </div>
-                <span className="text-sm text-slate-400 ml-1">({product.reviews} reviews)</span>
+                <span className="text-sm text-slate-400 ml-1">[{product.reviews} REVIEWS]</span>
               </div>
-              <div className="w-1 h-1 rounded-full bg-white/20"></div>
+              <div className="w-1 h-1 rounded-full bg-[#39FF14]/50"></div>
               <div className="flex items-center gap-1.5 text-sm text-slate-400">
                 <ShieldCheck size={16} className="text-[#39FF14]" />
-                Seller: <span className="text-white font-mono">{product.seller}</span>
+                Vendor: <span className="text-white">{product.seller}</span>
               </div>
             </div>
           </div>
 
-          <div className="p-6 rounded-xl bg-[#12121A] border border-white/5 space-y-4">
+          <div className="p-6 bg-[#0A0A0F] border border-[#39FF14]/20 space-y-4 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#39FF14]/50 to-transparent"></div>
             <div className="flex items-end gap-4">
-              <span className="text-5xl font-black font-mono text-[#39FF14] tracking-tight">
+              <span className="text-5xl font-black text-[#39FF14] tracking-tight">
                 ${product.price.toFixed(2)}
               </span>
               <span className="text-xl text-slate-500 line-through mb-1">
@@ -127,43 +133,43 @@ export const ProductDetailsPage: React.FC<ProductDetailsPageProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button 
               onClick={() => onAddToCart(product)}
-              className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white font-bold py-4 rounded-xl border border-white/10 transition-colors uppercase tracking-widest"
+              className="flex items-center justify-center gap-2 bg-transparent hover:bg-[#39FF14]/10 text-[#39FF14] font-bold py-4 border border-[#39FF14]/50 transition-colors uppercase tracking-widest"
             >
-              <ShoppingCart size={18} /> Add to Cart
+              <ShoppingCart size={18} /> ADD TO CART
             </button>
             <button 
               onClick={() => onBuyNow(product)}
-              className="flex items-center justify-center gap-2 bg-[#39FF14] hover:bg-[#32E611] text-black font-black py-4 rounded-xl transition-colors uppercase tracking-widest shadow-[0_0_20px_rgba(57,255,20,0.2)] hover:shadow-[0_0_30px_rgba(57,255,20,0.4)]"
+              className="flex items-center justify-center gap-2 bg-[#39FF14] hover:bg-white text-black font-black py-4 transition-colors uppercase tracking-widest"
             >
-              <Zap size={18} fill="currentColor" /> Buy Now
+              <Zap size={18} fill="currentColor" /> BUY NOW
             </button>
           </div>
 
           <button 
             onClick={() => setIsWishlisted(!isWishlisted)}
-            className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl border transition-colors uppercase tracking-widest text-sm font-bold ${
+            className={`w-full flex items-center justify-center gap-2 py-4 border transition-colors uppercase tracking-widest text-sm font-bold ${
               isWishlisted 
-                ? 'bg-pink-500/10 border-pink-500/50 text-pink-500' 
-                : 'bg-transparent border-white/10 text-slate-400 hover:text-white hover:border-white/30'
+                ? 'bg-red-500/10 border-red-500/50 text-red-500' 
+                : 'bg-transparent border-[#39FF14]/20 text-slate-400 hover:text-[#39FF14] hover:border-[#39FF14]/50'
             }`}
           >
             <Heart size={18} className={isWishlisted ? 'fill-current' : ''} /> 
-            {isWishlisted ? 'Saved to Wishlist' : 'Add to Wishlist'}
+            {isWishlisted ? 'SAVED TO WATCHLIST' : 'ADD TO WATCHLIST'}
           </button>
 
           {/* Security Info */}
-          <div className="pt-6 border-t border-white/5 grid grid-cols-2 gap-4">
+          <div className="pt-6 border-t border-[#39FF14]/20 grid grid-cols-2 gap-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-sm text-white font-medium">
-                <ShieldCheck size={16} className="text-[#39FF14]" /> Escrow Protection
+                <ShieldCheck size={16} className="text-[#39FF14]" /> Multisig Escrow
               </div>
-              <p className="text-xs text-slate-500 pl-6">Funds held until delivery confirmed</p>
+              <p className="text-xs text-slate-500 pl-6">2-of-3 signatures required</p>
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-sm text-white font-medium">
-                <Zap size={16} className="text-[#39FF14]" /> Instant Delivery
+                <Zap size={16} className="text-[#39FF14]" /> Auto-Dispatch
               </div>
-              <p className="text-xs text-slate-500 pl-6">Automated dispatch system</p>
+              <p className="text-xs text-slate-500 pl-6">PGP encrypted delivery</p>
             </div>
           </div>
         </div>

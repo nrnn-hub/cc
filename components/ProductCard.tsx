@@ -30,56 +30,64 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
 
   return (
     <div 
-      className="group relative bg-[#12121A] border border-white/5 rounded-xl overflow-hidden hover:border-[#39FF14]/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(57,255,20,0.15)] cursor-pointer flex flex-col"
+      className="group relative bg-[#0A0A0F] border border-[#39FF14]/20 rounded-none overflow-hidden hover:border-[#39FF14] transition-all duration-500 hover:shadow-[0_0_30px_rgba(57,255,20,0.4)] hover:-translate-y-1 hover:scale-[1.01] cursor-pointer flex flex-col font-mono"
       onClick={() => onViewDetails(product)}
     >
+      {/* Hover Background Animation */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#39FF14]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0"></div>
+
+      {/* Scanline effect */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-30">
+        <div className="w-full h-1 bg-[#39FF14]/20 absolute top-0 animate-[scan_3s_linear_infinite]"></div>
+      </div>
+
       {/* Discount Badge */}
-      <div className="absolute top-3 left-3 z-20 bg-[#39FF14] text-black text-[10px] font-black px-2 py-1 rounded-sm uppercase tracking-tighter animate-bounce shadow-lg">
-        {discount}% OFF
+      <div className="absolute top-3 left-3 z-20 bg-red-500/20 border border-red-500/50 text-red-500 text-[10px] font-black px-2 py-1 uppercase tracking-widest shadow-lg">
+        [{discount}% OFF]
       </div>
 
       {/* Verified Badge */}
-      <div className="absolute top-3 right-3 z-20 bg-blue-500/20 backdrop-blur-md border border-blue-500/30 text-blue-400 text-[10px] font-bold px-2 py-1 rounded flex items-center gap-1">
-        <Zap size={10} fill="currentColor" /> VERIFIED SELLER
+      <div className="absolute top-3 right-3 z-20 bg-black/80 border border-[#39FF14]/30 text-[#39FF14] text-[10px] font-bold px-2 py-1 flex items-center gap-1">
+        <Zap size={10} fill="currentColor" /> PGP VERIFIED
       </div>
 
-      <div className="aspect-square overflow-hidden relative">
+      <div className="aspect-square overflow-hidden relative grayscale group-hover:grayscale-0 transition-all duration-700">
         <img 
           src={product.image} 
           alt={product.title} 
-          className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-125 group-hover:brightness-110"
+          className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#12121A] via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] via-transparent to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500" />
         
         {/* Countdown Overlay */}
-        <div className="absolute bottom-2 left-2 right-2 bg-red-500/20 backdrop-blur-md border border-red-500/30 p-1.5 rounded flex items-center justify-between z-10">
-          <div className="flex items-center gap-1.5 text-red-400">
-            <Clock size={12} className="animate-spin-slow" />
-            <span className="text-[10px] font-bold uppercase tracking-widest">Ending Soon</span>
+        <div className="absolute bottom-2 left-2 right-2 bg-black/80 border border-red-500/50 p-1.5 flex items-center justify-between z-10">
+          <div className="flex items-center gap-1.5 text-red-500">
+            <Clock size={12} className="animate-pulse" />
+            <span className="text-[10px] font-bold uppercase tracking-widest">Listing Expires</span>
           </div>
-          <span className="text-red-400 text-xs font-mono font-bold">{formatTime(timeLeft)}</span>
+          <span className="text-red-500 text-xs font-bold">{formatTime(timeLeft)}</span>
         </div>
       </div>
 
-      <div className="p-4 space-y-3 relative z-10 bg-[#12121A] flex-1 flex flex-col">
-        <h3 className="font-bold text-white line-clamp-2 leading-tight h-10 group-hover:text-[#39FF14] transition-colors">
-          {product.title}
+      <div className="p-4 space-y-3 relative z-10 bg-[#0A0A0F] flex-1 flex flex-col border-t border-[#39FF14]/20">
+        <h3 className="font-bold text-white line-clamp-2 leading-tight h-10 group-hover:text-[#39FF14] group-hover:drop-shadow-[0_0_8px_rgba(57,255,20,0.8)] transition-all duration-300 text-sm">
+          {'>'} {product.title}
         </h3>
         
         <div className="flex items-center gap-1">
-          <div className="flex text-yellow-400">
+          <div className="flex text-[#39FF14]">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} size={12} fill="currentColor" />
+              <Star key={i} size={10} fill="currentColor" />
             ))}
           </div>
-          <span className="text-xs text-slate-500">({product.reviews})</span>
+          <span className="text-[10px] text-slate-500">[{product.reviews} REVIEWS]</span>
         </div>
 
         <div className="flex items-baseline gap-2 mt-auto">
-          <span className="text-2xl font-black font-mono text-[#39FF14] tracking-tight">
+          <span className="text-xl font-black text-[#39FF14] tracking-tight">
             ${product.price.toFixed(2)}
           </span>
-          <span className="text-sm text-slate-500 line-through">
+          <span className="text-xs text-slate-500 line-through">
             ${product.originalPrice.toFixed(2)}
           </span>
         </div>
@@ -90,16 +98,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
               e.stopPropagation();
               onAddToCart(product);
             }}
-            className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white text-xs font-bold py-2.5 rounded-lg border border-white/10 transition-colors"
+            className="flex items-center justify-center gap-2 bg-transparent hover:bg-[#39FF14]/10 text-[#39FF14] text-xs font-bold py-2 border border-[#39FF14]/50 transition-colors uppercase"
           >
-            <ShoppingCart size={14} /> + CART
+            <ShoppingCart size={14} /> ADD
           </button>
           <button 
             onClick={(e) => {
               e.stopPropagation();
               onBuyNow(product);
             }}
-            className="flex items-center justify-center bg-[#39FF14] hover:bg-[#32E611] text-black text-xs font-black py-2.5 rounded-lg transition-colors uppercase tracking-widest shadow-[0_4px_10px_rgba(57,255,20,0.3)] active:scale-95"
+            className="flex items-center justify-center bg-[#39FF14] hover:bg-white text-black text-xs font-black py-2 transition-all duration-300 uppercase tracking-widest hover:shadow-[0_0_15px_rgba(255,255,255,0.6)] hover:scale-105"
           >
             BUY NOW
           </button>

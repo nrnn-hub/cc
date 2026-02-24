@@ -23,5 +23,17 @@ export interface User {
   password?: string;
 }
 
-export type AppView = 'grid' | 'checkout' | 'reveal' | 'product';
+export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered';
+
+export interface Order {
+  id: string;
+  userId: string;
+  items: CartItem[];
+  total: number;
+  status: OrderStatus;
+  date: string;
+  cryptoAddress: string;
+}
+
+export type AppView = 'grid' | 'checkout' | 'reveal' | 'product' | 'orders';
 export type AuthMode = 'login' | 'signup' | null;
