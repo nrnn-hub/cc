@@ -2,6 +2,7 @@
 export interface Product {
   id: string;
   title: string;
+  description: string;
   price: number;
   originalPrice: number;
   image: string;
@@ -16,4 +17,11 @@ export interface CartItem extends Product {
   quantity: number;
 }
 
-export type AppView = 'grid' | 'checkout' | 'reveal';
+export interface User {
+  email: string;
+  name?: string;
+  password?: string;
+}
+
+export type AppView = 'grid' | 'checkout' | 'reveal' | 'product';
+export type AuthMode = 'login' | 'signup' | null;

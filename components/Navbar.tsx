@@ -1,17 +1,28 @@
 
 import React, { useState } from 'react';
-import { ShoppingCart, ShieldAlert, X, Trash2, ChevronRight } from 'lucide-react';
-import { CartItem, AppView } from '../types.ts';
+import { ShoppingCart, ShieldAlert, X, Trash2, ChevronRight, User, LogOut, LogIn } from 'lucide-react';
+import { CartItem, AppView, User as UserType, AuthMode } from '../types.ts';
 import { COLORS } from '../constants.tsx';
 
 interface NavbarProps {
   cart: CartItem[];
+  user: UserType | null;
   onRemove: (id: string) => void;
   onViewChange: (view: AppView) => void;
+  onAuth: (mode: AuthMode) => void;
+  onLogout: () => void;
   currentView: AppView;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ cart, onRemove, onViewChange, currentView }) => {
+export const Navbar: React.FC<NavbarProps> = ({ 
+  cart, 
+  user, 
+  onRemove, 
+  onViewChange, 
+  onAuth, 
+  onLogout, 
+  currentView 
+}) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -26,12 +37,44 @@ export const Navbar: React.FC<NavbarProps> = ({ cart, onRemove, onViewChange, cu
           <div className="w-10 h-10 bg-[#39FF14]/10 rounded flex items-center justify-center border border-[#39FF14]/30 group-hover:border-[#39FF14] transition-all">
             <ShieldAlert className="text-[#39FF14]" size={24} />
           </div>
-          <span className="text-2xl font-bold tracking-tighter text-white font-mono">
+          <span className="text-2xl font-bold tracking-tighter text-white font-mono hidden sm:block">
             SHADOW<span className="text-[#39FF14] neon-glow">MARKET</span>
           </span>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 sm:gap-6">
+          {user ? (
+            <div className="flex items-center gap-4">
+              <div className="hidden md:flex items-center gap-2 text-xs font-mono text-[#39FF14] bg-[#39FF14]/10 px-3 py-1.5 rounded border border-[#39FF14]/20">
+                <User size={14} />
+                <span className="truncate max-w-[100px]">{user.name || user.email}</span>
+              </div>
+              <button 
+                onClick={onLogout}
+                className="text-slate-400 hover:text-red-500 transition-colors text-xs font-bold uppercase tracking-wider flex items-center gap-1"
+              >
+                <LogOut size={16} /> <span className="hidden sm:inline">Disconnect</span>
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => onAuth('login')}
+                className="text-slate-400 hover:text-white transition-colors text-xs font-bold uppercase tracking-wider flex items-center gap-1"
+              >
+                <LogIn size={16} /> <span className="hidden sm:inline">Login</span>
+              </button>
+              <button 
+                onClick={() => onAuth('signup')}
+                className="bg-[#39FF14]/10 hover:bg-[#39FF14]/20 text-[#39FF14] border border-[#39FF14]/50 px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wider transition-all"
+              >
+                Sign Up
+              </button>
+            </div>
+          )}
+
+          <div className="h-6 w-px bg-white/10 hidden sm:block"></div>
+
           <button 
             onClick={() => setIsCartOpen(!isCartOpen)}
             className="relative p-2 hover:bg-[#39FF14]/10 rounded-full transition-colors group"

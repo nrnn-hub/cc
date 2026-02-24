@@ -7,9 +7,10 @@ interface ProductCardProps {
   product: Product;
   onAddToCart: (p: Product) => void;
   onBuyNow: (p: Product) => void;
+  onViewDetails: (p: Product) => void;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNow }) => {
+export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, onBuyNow, onViewDetails }) => {
   const [timeLeft, setTimeLeft] = useState(product.expiryMinutes * 60);
 
   useEffect(() => {
@@ -28,7 +29,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
   const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
 
   return (
-    <div className="group relative bg-[#12121A] border border-white/5 rounded-xl overflow-hidden hover:border-[#39FF14]/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(57,255,20,0.15)]">
+    <div 
+      className="group relative bg-[#12121A] border border-white/5 rounded-xl overflow-hidden hover:border-[#39FF14]/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(57,255,20,0.15)] cursor-pointer flex flex-col"
+      onClick={() => onViewDetails(product)}
+    >
       {/* Discount Badge */}
       <div className="absolute top-3 left-3 z-20 bg-[#39FF14] text-black text-[10px] font-black px-2 py-1 rounded-sm uppercase tracking-tighter animate-bounce shadow-lg">
         {discount}% OFF
@@ -39,7 +43,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
         <Zap size={10} fill="currentColor" /> VERIFIED SELLER
       </div>
 
-      <div className="aspect-square overflow-hidden relative cursor-zoom-in">
+      <div className="aspect-square overflow-hidden relative">
         <img 
           src={product.image} 
           alt={product.title} 
@@ -57,7 +61,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
         </div>
       </div>
 
-      <div className="p-4 space-y-3 relative z-10 bg-[#12121A]">
+      <div className="p-4 space-y-3 relative z-10 bg-[#12121A] flex-1 flex flex-col">
         <h3 className="font-bold text-white line-clamp-2 leading-tight h-10 group-hover:text-[#39FF14] transition-colors">
           {product.title}
         </h3>
@@ -71,7 +75,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
           <span className="text-xs text-slate-500">({product.reviews})</span>
         </div>
 
-        <div className="flex items-baseline gap-2">
+        <div className="flex items-baseline gap-2 mt-auto">
           <span className="text-2xl font-black font-mono text-[#39FF14] tracking-tight">
             ${product.price.toFixed(2)}
           </span>
@@ -80,15 +84,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
           </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 mt-4">
           <button 
-            onClick={() => onAddToCart(product)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddToCart(product);
+            }}
             className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white text-xs font-bold py-2.5 rounded-lg border border-white/10 transition-colors"
           >
             <ShoppingCart size={14} /> + CART
           </button>
           <button 
-            onClick={() => onBuyNow(product)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onBuyNow(product);
+            }}
             className="flex items-center justify-center bg-[#39FF14] hover:bg-[#32E611] text-black text-xs font-black py-2.5 rounded-lg transition-colors uppercase tracking-widest shadow-[0_4px_10px_rgba(57,255,20,0.3)] active:scale-95"
           >
             BUY NOW

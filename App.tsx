@@ -4,13 +4,19 @@ import { Navbar } from './components/Navbar.tsx';
 import { ProductCard } from './components/ProductCard.tsx';
 import { CheckoutPage } from './components/CheckoutPage.tsx';
 import { RevealPage } from './components/RevealPage.tsx';
+import { ProductDetailsPage } from './components/ProductDetailsPage.tsx';
+import { Chatbot } from './components/Chatbot.tsx';
+import { AuthModal } from './components/AuthModal.tsx';
 import { PRODUCTS } from './constants.tsx';
-import { Product, CartItem, AppView } from './types.ts';
+import { Product, CartItem, AppView, User, AuthMode } from './types.ts';
 import { ShieldAlert, Github, Info } from 'lucide-react';
 
 export default function App() {
   const [view, setView] = useState<AppView>('grid');
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [authMode, setAuthMode] = useState<AuthMode>(null);
 
   // Scroll to top on view change
   useEffect(() => {
@@ -39,8 +45,23 @@ export default function App() {
     setView('checkout');
   };
 
+  const handleViewDetails = (product: Product) => {
+    setSelectedProduct(product);
+    setView('product');
+  };
+
   const resetSim = () => {
     setCart([]);
+    setView('grid');
+  };
+
+  const handleLogin = (userData: User) => {
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setCart([]); // Optional: clear cart on logout
     setView('grid');
   };
 
@@ -48,9 +69,20 @@ export default function App() {
     <div className="min-h-screen flex flex-col selection:bg-[#39FF14] selection:text-black">
       <Navbar 
         cart={cart} 
+        user={user}
         onRemove={handleRemoveFromCart} 
         onViewChange={setView}
+        onAuth={setAuthMode}
+        onLogout={handleLogout}
         currentView={view}
+      />
+
+      <AuthModal 
+        isOpen={!!authMode}
+        mode={authMode}
+        onClose={() => setAuthMode(null)}
+        onSwitchMode={setAuthMode}
+        onLogin={handleLogin}
       />
 
       <main className="flex-1">
@@ -78,10 +110,20 @@ export default function App() {
                   product={product} 
                   onAddToCart={handleAddToCart}
                   onBuyNow={handleBuyNow}
+                  onViewDetails={handleViewDetails}
                 />
               ))}
             </div>
           </div>
+        )}
+
+        {view === 'product' && selectedProduct && (
+          <ProductDetailsPage 
+            product={selectedProduct}
+            onBack={() => setView('grid')}
+            onAddToCart={handleAddToCart}
+            onBuyNow={handleBuyNow}
+          />
         )}
 
         {view === 'checkout' && (
@@ -96,6 +138,8 @@ export default function App() {
           <RevealPage onRestart={resetSim} />
         )}
       </main>
+
+      <Chatbot />
 
       {/* Footer */}
       <footer className="border-t border-white/5 bg-[#0D0D15] py-12 px-6">
