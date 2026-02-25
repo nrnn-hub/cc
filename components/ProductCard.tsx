@@ -55,6 +55,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, 
         <img 
           src={product.image} 
           alt={product.title} 
+          referrerPolicy="no-referrer"
           className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] via-transparent to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500" />

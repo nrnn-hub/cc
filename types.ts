@@ -23,7 +23,7 @@ export interface User {
   password?: string;
 }
 
-export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered';
+export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
 
 export interface Order {
   id: string;
@@ -33,7 +33,8 @@ export interface Order {
   status: OrderStatus;
   date: string;
   cryptoAddress: string;
+  paymentId: string;
 }
 
-export type AppView = 'grid' | 'checkout' | 'reveal' | 'product' | 'orders';
+export type AppView = 'grid' | 'checkout' | 'reveal' | 'product' | 'orders' | 'admin';
 export type AuthMode = 'login' | 'signup' | null;

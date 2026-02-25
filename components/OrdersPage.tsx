@@ -82,7 +82,7 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({ userEmail }) => {
               <div className="p-4 space-y-4">
                 {order.items.map((item, idx) => (
                   <div key={idx} className="flex items-center gap-4">
-                    <img src={item.image} alt={item.title} className="w-16 h-16 object-cover rounded border border-white/10 grayscale" />
+                    <img src={item.image} alt={item.title} referrerPolicy="no-referrer" className="w-16 h-16 object-cover rounded border border-white/10 grayscale" />
                     <div className="flex-1">
                       <p className="text-sm text-white font-bold">{item.title}</p>
                       <p className="text-xs text-slate-500">Qty: {item.quantity} × ${item.price.toFixed(2)}</p>
@@ -92,8 +92,11 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({ userEmail }) => {
                 ))}
               </div>
               
-              <div className="p-4 border-t border-white/5 bg-black/50 flex justify-between items-center">
-                <p className="text-[10px] text-slate-500">Escrow Address: <span className="text-slate-400">{order.cryptoAddress}</span></p>
+              <div className="p-4 border-t border-white/5 bg-black/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div className="space-y-1">
+                  <p className="text-[10px] text-slate-500">Escrow Address: <span className="text-slate-400">{order.cryptoAddress}</span></p>
+                  <p className="text-[10px] text-slate-500">Transaction ID: <span className="text-orange-400">{order.paymentId || 'N/A'}</span></p>
+                </div>
                 {order.status === 'pending' && (
                   <p className="text-[10px] text-yellow-500 animate-pulse">Awaiting Admin Confirmation</p>
                 )}

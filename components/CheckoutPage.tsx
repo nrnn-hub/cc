@@ -21,6 +21,8 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ cart, onBack, onConf
   const [paymentMethod, setPaymentMethod] = useState<'crypto' | 'card'>('crypto');
   const [copied, setCopied] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [transactionId, setTransactionId] = useState('');
+  const [txError, setTxError] = useState('');
 
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const btcAmount = (total / 65000).toFixed(6); // Fictional BTC rate
@@ -37,13 +39,18 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ cart, onBack, onConf
   };
 
   const handleConfirmBtcPayment = () => {
+    if (!transactionId.trim()) {
+      setTxError('Transaction ID or Sender Address is required.');
+      return;
+    }
+    setTxError('');
     setIsVerifying(true);
     // Simulate a fake "blockchain verification" delay
     setTimeout(() => {
       setIsVerifying(false);
       setStep('success');
       setTimeout(() => {
-        onConfirm(btcAddress);
+        onConfirm(btcAddress, transactionId);
       }, 2000);
     }, 2500);
   };
@@ -121,6 +128,18 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ cart, onBack, onConf
                     {copied ? <Check size={20} /> : <Copy size={20} />}
                   </button>
                 </div>
+              </div>
+
+              <div className="space-y-2 text-left pt-4 border-t border-white/5">
+                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-2">Transaction ID / Sender Address</label>
+                <input 
+                  type="text" 
+                  value={transactionId}
+                  onChange={(e) => setTransactionId(e.target.value)}
+                  placeholder="Enter TXID or your BTC address"
+                  className="w-full bg-black/50 border border-white/10 rounded-xl p-4 font-mono text-sm text-white focus:border-orange-500 outline-none transition-colors"
+                />
+                {txError && <p className="text-red-500 text-xs ml-2 mt-1">{txError}</p>}
               </div>
             </div>
 

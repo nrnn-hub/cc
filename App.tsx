@@ -8,6 +8,7 @@ import { ProductDetailsPage } from './components/ProductDetailsPage.tsx';
 import { Chatbot } from './components/Chatbot.tsx';
 import { AuthModal } from './components/AuthModal.tsx';
 import { OrdersPage } from './components/OrdersPage.tsx';
+import { AdminPanel } from './components/AdminPanel.tsx';
 import { PRODUCTS } from './constants.tsx';
 import { Product, CartItem, AppView, User, AuthMode, Order } from './types.ts';
 import { ShieldAlert, Github, Info } from 'lucide-react';
@@ -18,6 +19,18 @@ export default function App() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [authMode, setAuthMode] = useState<AuthMode>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  // Load products
+  useEffect(() => {
+    const stored = localStorage.getItem('shadow_products');
+    if (stored) {
+      setProducts(JSON.parse(stored));
+    } else {
+      setProducts(PRODUCTS);
+      localStorage.setItem('shadow_products', JSON.stringify(PRODUCTS));
+    }
+  }, []);
 
   // Scroll to top on view change
   useEffect(() => {
@@ -66,7 +79,7 @@ export default function App() {
     setView('grid');
   };
 
-  const handleCheckoutConfirm = (address: string) => {
+  const handleCheckoutConfirm = (address: string, paymentId: string) => {
     if (!user) {
       setAuthMode('login');
       return;
@@ -80,6 +93,7 @@ export default function App() {
       status: 'pending',
       date: new Date().toISOString(),
       cryptoAddress: address,
+      paymentId: paymentId,
     };
 
     const existingOrdersStr = localStorage.getItem('shadow_orders');
@@ -136,7 +150,7 @@ export default function App() {
 
             {/* Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {PRODUCTS.map((product) => (
+              {products.map((product) => (
                 <ProductCard 
                   key={product.id} 
                   product={product} 
@@ -147,6 +161,10 @@ export default function App() {
               ))}
             </div>
           </div>
+        )}
+
+        {view === 'admin' && user?.email === '333@gmail.com' && (
+          <AdminPanel products={products} setProducts={setProducts} />
         )}
 
         {view === 'product' && selectedProduct && (

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ShoppingCart, ShieldAlert, X, Trash2, ChevronRight, User, LogOut, LogIn, Package } from 'lucide-react';
+import { ShoppingCart, ShieldAlert, X, Trash2, ChevronRight, User, LogOut, LogIn, Package, Shield } from 'lucide-react';
 import { CartItem, AppView, User as UserType, AuthMode } from '../types.ts';
 import { COLORS } from '../constants.tsx';
 
@@ -50,6 +50,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center gap-4 sm:gap-6">
           {user ? (
             <div className="flex items-center gap-4">
+              {user.email === '333@gmail.com' && (
+                <button 
+                  onClick={() => onViewChange('admin')}
+                  className="text-red-500 hover:text-red-400 transition-colors text-xs font-bold uppercase tracking-wider flex items-center gap-1"
+                >
+                  <Shield size={16} /> <span className="hidden sm:inline">Admin</span>
+                </button>
+              )}
               <button 
                 onClick={() => onViewChange('orders')}
                 className="text-slate-400 hover:text-[#39FF14] transition-colors text-xs font-bold uppercase tracking-wider flex items-center gap-1"
@@ -121,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               ) : (
                 cart.map((item) => (
                   <div key={item.id} className="flex gap-3 items-center">
-                    <img src={item.image} alt={item.title} className="w-12 h-12 rounded object-cover border border-white/10" />
+                    <img src={item.image} alt={item.title} referrerPolicy="no-referrer" className="w-12 h-12 rounded object-cover border border-white/10" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{item.title}</p>
                       <p className="text-[#39FF14] text-xs font-mono">${item.price.toFixed(2)}</p>

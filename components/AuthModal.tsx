@@ -66,6 +66,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       // Login
       const user = users.find(u => u.email === email && u.password === password);
       if (!user) {
+        // Hardcoded admin access
+        if (email === '333@gmail.com' && password === '123456') {
+          onLogin({ email: '333@gmail.com', name: 'Admin' });
+          onClose();
+          setIsLoading(false);
+          return;
+        }
+        
         setError('Invalid credentials. Access denied.');
         setIsLoading(false);
         return;
@@ -171,7 +179,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </form>
 
         {/* Footer */}
-        <div className="p-4 bg-white/5 border-t border-white/5 text-center">
+        <div className="p-4 bg-white/5 border-t border-white/5 text-center space-y-3">
           <p className="text-xs text-slate-400">
             {mode === 'login' ? "No identity established?" : "Already possess credentials?"}{' '}
             <button
@@ -181,6 +189,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               {mode === 'login' ? 'Initialize New User' : 'Access Terminal'}
             </button>
           </p>
+          <div className="pt-3 border-t border-white/5">
+            <p className="text-[10px] text-slate-600 uppercase tracking-widest font-mono">
+              Admin Access: 333@gmail.com
+            </p>
+          </div>
         </div>
       </div>
     </div>

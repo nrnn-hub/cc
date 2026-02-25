@@ -143,6 +143,58 @@ export const PRODUCTS: Product[] = [
     expiryMinutes: 4,
     category: 'Data Dumps',
     seller: 'Shadow_Skimmer_Elite'
+  },
+  {
+    id: 'prod_012',
+    title: 'Track 1 & 2 Dumps with PIN (USA) - 50x',
+    description: 'Fresh Track 1 & 2 dumps with PINs. Ready to be written to blank cards for ATM cashouts. High balance accounts targeted. Includes tutorial for beginners.',
+    price: 350.00,
+    originalPrice: 2500.00,
+    image: 'https://images.unsplash.com/photo-1580519542036-ed47f3e42214?auto=format&fit=crop&q=80&w=800',
+    rating: 5,
+    reviews: 412,
+    expiryMinutes: 6,
+    category: 'Data Dumps',
+    seller: 'ATM_Ghost'
+  },
+  {
+    id: 'prod_013',
+    title: 'Corporate Credit Card Details (Amex Platinum) - 10x',
+    description: 'Exclusive access to 10x Amex Platinum corporate card details. Extremely high limits. Perfect for large electronics purchases or travel bookings. Use with caution.',
+    price: 500.00,
+    originalPrice: 5000.00,
+    image: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&q=80&w=800',
+    rating: 5,
+    reviews: 89,
+    expiryMinutes: 2,
+    category: 'Cards',
+    seller: 'Exec_Breach'
+  },
+  {
+    id: 'prod_014',
+    title: 'Fresh PayPal Accounts with Balance ($500-$2000)',
+    description: 'Hacked PayPal accounts with confirmed balances ranging from $500 to $2000. Includes login credentials, cookies, and proxy IPs to avoid triggering security alerts.',
+    price: 120.00,
+    originalPrice: 1000.00,
+    image: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?auto=format&fit=crop&q=80&w=800',
+    rating: 5,
+    reviews: 1543,
+    expiryMinutes: 15,
+    category: 'Accounts',
+    seller: 'PP_Drainer'
+  },
+  {
+    id: 'prod_015',
+    title: 'Full Identity Profiles (SSN, DOB, DL, Credit Report) - 20x',
+    description: 'Complete identity profiles for 20 individuals with credit scores 750+. Includes Social Security Numbers, Dates of Birth, Driver\'s License scans, and full credit reports. Ideal for loan applications.',
+    price: 250.00,
+    originalPrice: 2000.00,
+    image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=800',
+    rating: 5,
+    reviews: 67,
+    expiryMinutes: 10,
+    category: 'Data Dumps',
+    seller: 'Identity_Broker'
   }
 ];
 
