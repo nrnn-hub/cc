@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar.tsx';
 import { ProductCard } from './components/ProductCard.tsx';
 import { CheckoutPage } from './components/CheckoutPage.tsx';
-import { RevealPage } from './components/RevealPage.tsx';
 import { ProductDetailsPage } from './components/ProductDetailsPage.tsx';
 import { Chatbot } from './components/Chatbot.tsx';
 import { AuthModal } from './components/AuthModal.tsx';
 import { OrdersPage } from './components/OrdersPage.tsx';
 import { AdminPanel } from './components/AdminPanel.tsx';
+import { BackgroundAnimation } from './components/BackgroundAnimation.tsx';
 import { PRODUCTS } from './constants.tsx';
 import { Product, CartItem, AppView, User, AuthMode, Order } from './types.ts';
 import { ShieldAlert, Github, Info } from 'lucide-react';
@@ -105,7 +105,8 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col selection:bg-[#39FF14] selection:text-black">
+    <div className="min-h-screen flex flex-col selection:bg-[#39FF14] selection:text-black relative">
+      <BackgroundAnimation />
       <Navbar 
         cart={cart} 
         user={user}
@@ -187,17 +188,13 @@ export default function App() {
         {view === 'orders' && user && (
           <OrdersPage userEmail={user.email} />
         )}
-
-        {view === 'reveal' && (
-          <RevealPage onRestart={resetSim} />
-        )}
       </main>
 
       <Chatbot />
 
       {/* Footer */}
       <footer className="border-t border-white/5 bg-[#0D0D15] py-12 px-6">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <ShieldAlert className="text-[#39FF14]" size={20} />
@@ -225,24 +222,13 @@ export default function App() {
               <li className="hover:text-[#39FF14] cursor-pointer">FAQ</li>
             </ul>
           </div>
-
-          <div className="p-4 rounded-xl bg-white/5 border border-white/5 space-y-3">
-            <div className="flex items-center gap-2 text-xs font-bold text-[#39FF14]">
-              <Info size={14} /> EDUCATIONAL SIMULATION
-            </div>
-            <p className="text-[10px] text-slate-500 leading-tight">
-              ShadowMarket is a fictional simulator created for cybersecurity awareness. 
-              No real payments are processed. Always buy from reputable, legal vendors.
-            </p>
-          </div>
         </div>
         
         <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-slate-600 uppercase tracking-widest">
-          <p>© 2024 ShadowMarket Awareness Initiative</p>
+          <p>© 2024 ShadowMarket</p>
           <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1"><Github size={12} /> Source Code</span>
-            <span>Terms of Illusion</span>
-            <span>Privacy Phantom</span>
+            <span>Terms of Service</span>
+            <span>Privacy Policy</span>
           </div>
         </div>
       </footer>

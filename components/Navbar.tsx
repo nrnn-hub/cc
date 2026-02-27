@@ -28,7 +28,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   return (
-    <nav className="sticky top-0 z-50 bg-[#0A0A0F]/80 backdrop-blur-md border-b border-[#39FF14]/20 py-4 px-6">
+    <nav className="sticky top-0 z-50 bg-[#0A0A0F] border-b border-[#39FF14]/20 py-4 px-6">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div 
           className="flex items-center gap-2 cursor-pointer group"
